@@ -1,23 +1,33 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using NUnitTests.PageObject;
+using System;
 
 namespace NUnitTests.Tests
 {
+    [TestFixture]
     public class TallestBuildingsPageTests : BaseTests
     {
+        private string _valueList;
+        private TallestBuildingsPage _tallestBuildingsPage;
+
+
+        [SetUp]
+        public void SetUp()
+        {
+            _valueList = "tallest100-completed";
+            _tallestBuildingsPage = new TallestBuildingsPage(driver);
+            _tallestBuildingsPage.GoToTallestBuildingsPage();
+        }
+
 
         [Test]
         public void Verify_Buildings_Count()
         {
-            string valueList = "tallest100-completed";
             int expectedBuildingCount = 100;
 
-            var tallestBuildingsPage = new TallestBuildingsPage(driver);
-
-            tallestBuildingsPage
-                .SelectBuildingsFromTheList(valueList)
+            _tallestBuildingsPage
+                .SelectBuildingsFromTheList(_valueList)
                 .GetBuildingsNum()
                 .Should()
                 .Be(expectedBuildingCount);
@@ -27,15 +37,11 @@ namespace NUnitTests.Tests
         public void Verify_LotteWorldTower_Floors_Count()
         {
             string headerColumnName = "FLOORS";
-            string valueList = "tallest100-completed";
             string expLotteWorldTowerFloorsCount = "123";
             string buildingName = "Lotte World Tower";
 
-
-            var tallestBuildingsPage = new TallestBuildingsPage(driver);
-
-            tallestBuildingsPage
-                .SelectBuildingsFromTheList(valueList)
+            _tallestBuildingsPage
+                .SelectBuildingsFromTheList(_valueList)
                 .GetInfoAboutBuilding(buildingName, headerColumnName)
                 .Should()
                 .Be(expLotteWorldTowerFloorsCount);
@@ -44,12 +50,8 @@ namespace NUnitTests.Tests
         [Test]
         public void PrintOut_BuildingName_With_MaxFloors()
         {
-            string valueList = "tallest100-completed";
-
-            var tallestBuildingsPage = new TallestBuildingsPage(driver);
-
-            var maxFloorBuildingName = tallestBuildingsPage
-                .SelectBuildingsFromTheList(valueList)
+            var maxFloorBuildingName = _tallestBuildingsPage
+                .SelectBuildingsFromTheList(_valueList)
                 .GetMaxFloorBuildingName();
 
             Console.WriteLine($"Max Floors Building Name is: {maxFloorBuildingName}");
