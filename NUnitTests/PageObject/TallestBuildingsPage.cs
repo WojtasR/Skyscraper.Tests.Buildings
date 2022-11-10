@@ -14,14 +14,22 @@ namespace NUnitTests.PageObject
             _driver = driver;
         }
 
+        private string _url = "https://www.skyscrapercenter.com/buildings?list=tallest100-construction";
         private IWebElement SelectionList => _driver.FindElement(By.Name("list"));
         private IWebElement BuildingsWebTableBody => _driver.FindElement(By.CssSelector("table>tbody"));
         private IWebElement BuildingsWebTableHeader => _driver.FindElement(By.CssSelector("table>thead>tr"));
 
+        public TallestBuildingsPage GoToTallestBuildingsPage()
+        {
+            _driver.Navigate().GoToUrl(_url);
+
+            return this;
+        }
+
         public TallestBuildingsPage SelectBuildingsFromTheList(string listValue)
         {
             SelectElement select = new SelectElement(SelectionList);
-            select.SelectByValue(listValue); 
+            select.SelectByValue(listValue);
 
             return this;
         }
